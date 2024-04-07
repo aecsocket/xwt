@@ -384,6 +384,9 @@ impl xwt_core::datagram::Send for Connection {
 
 impl Drop for Connection {
     fn drop(&mut self) {
-        self.transport.close();
+        let mut close_info = sys::WebTransportCloseInfo::new();
+        close_info.close_code(69);
+        close_info.reason("epic fail");
+        self.transport.close_with_close_info(&close_info);
     }
 }
